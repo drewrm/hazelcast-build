@@ -31,6 +31,8 @@ rm -rf %{buildroot}
 %files
 %defattr(-,root,root,-)
 /opt/hazelcast
+%defattr(0755,root,root,-)
+/opt/hazelcast/bin/*.sh
 %doc
 
 %pre

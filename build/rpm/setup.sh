@@ -18,12 +18,16 @@ fi
 
 latest_tag=$($GIT_CMD describe --abbrev=0 --tags)
 version=$(echo $latest_tag | cut -c 2-)
+release=$($GIT_CMD rev-list ${latest_tag}..HEAD | wc -l)
 
-$GIT_CMD checkout "tags/${latest_tag}"
+$GIT_CMD checkout master
 $GIT_CMD archive ${latest_tag} --format=tar --prefix=hazelcast-${version}/opt/hazelcast/ | gzip > ~/rpmbuild/SOURCES/hazelcast.tar.gz
+
 
 cp /vagrant/build/rpm/hazelcast.spec ~/rpmbuild/SPECS/
 sed -i "s/Version:.*$/Version: ${version}/g" ~/rpmbuild/SPECS/hazelcast.spec
+sed -i "s/Release:.*1/Release: ${release}/g" ~/rpmbuild/SPECS/hazelcast.spec
+
 
 rm ~/rpmbuild/RPMS/x86_64/hazelcast*.rpm
 rpmbuild -bb ~/rpmbuild/SPECS/hazelcast.spec
