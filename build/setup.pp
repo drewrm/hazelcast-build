@@ -1,3 +1,0 @@
-package { 'mock':
-  ensure => present,
-}
